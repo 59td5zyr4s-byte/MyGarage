@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#11100e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MyGarage">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="styles.css">
+<title>MyGarage — Tu garaje premium</title>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand-mark">MG</div>
+  <div><div class="brand">MyGarage</div><div class="tagline">TU PASIÓN. TU GARAJE.</div></div>
+  <button class="icon-btn" id="exportBtn" title="Exportar copia de seguridad" aria-label="Exportar copia">⇧</button>
+</header>
+<main>
+  <section id="home" class="page active">
+    <div class="hero">
+      <div class="eyebrow">COLECCIÓN PERSONAL</div>
+      <h1>Tu garaje.<br><span>Tu historia.</span></h1>
+      <p>Guarda las motos que tienes y las que algún día serán tuyas.</p>
+      <div class="hero-stats">
+        <div><strong id="ownedCount">0</strong><small>EN GARAJE</small></div>
+        <div><strong id="wishCount">0</strong><small>EN DESEOS</small></div>
+        <div><strong id="totalValue">—</strong><small>VALOR AÑADIDO</small></div>
+      </div>
+    </div>
+    <div class="section-heading"><div><span class="eyebrow">ACCESO RÁPIDO</span><h2>Tu colección</h2></div><button class="text-btn" data-goto="garage">Ver todo ↗</button></div>
+    <div id="homeGarage" class="bike-grid"></div>
+    <div class="empty-note" id="homeEmpty">Tu historia empieza con una moto.<br>Pulsa <b>+</b> para añadir la primera.</div>
+    <div class="tip-card"><span class="gold-dot"></span><div><b>Una pasión, bien organizada.</b><p>Tus datos se guardan en este iPhone. No necesitas cuenta.</p></div></div>
+  </section>
+
+  <section id="garage" class="page">
+    <div class="page-head"><div><span class="eyebrow">TU COLECCIÓN</span><h1>Mi garaje</h1></div><button class="gold-btn round" id="addOwnedBtn">＋</button></div>
+    <p class="muted">Las motos que tienes o has tenido.</p>
+    <div id="garageList" class="bike-list"></div>
+    <div class="empty-note" id="garageEmpty">Todavía no has añadido ninguna moto.</div>
+  </section>
+
+  <section id="wishlist" class="page">
+    <div class="page-head"><div><span class="eyebrow">PRÓXIMOS SUEÑOS</span><h1>Lista de deseos</h1></div><button class="gold-btn round" id="addWishBtn">＋</button></div>
+    <p class="muted">Modelos que te gustaría tener algún día.</p>
+    <div id="wishList" class="bike-list"></div>
+    <div class="empty-note" id="wishEmpty">Añade esa moto que no te quitas de la cabeza.</div>
+  </section>
+
+  <section id="compare" class="page">
+    <div class="page-head"><div><span class="eyebrow">CARA A CARA</span><h1>Comparador</h1></div><span class="compare-badge">HASTA 3</span></div>
+    <p class="muted">Selecciona motos de tu garaje y tu lista de deseos.</p>
+    <div id="comparePicker" class="compare-picker"></div>
+    <div id="comparison" class="comparison"></div>
+    <div id="compareEmpty" class="empty-note">Añade motos a tu garaje o lista de deseos para compararlas.</div>
+    <p class="footnote">Las cifras introducidas por ti pueden ser estimaciones. Comprueba siempre la ficha oficial del fabricante.</p>
+  </section>
+
+  <section id="details" class="page">
+    <button class="back-btn" id="backFromDetails">← Volver</button>
+    <div id="detailContent"></div>
+  </section>
+</main>
+
+<button class="fab" id="fab" aria-label="Añadir moto">＋</button>
+<nav class="tabbar">
+  <button class="tab active" data-tab="home"><span>⌂</span><small>Inicio</small></button>
+  <button class="tab" data-tab="garage"><span>♧</span><small>Garaje</small></button>
+  <button class="tab" data-tab="wishlist"><span>♡</span><small>Deseos</small></button>
+  <button class="tab" data-tab="compare"><span>⇄</span><small>Comparar</small></button>
+</nav>
+
+<dialog id="bikeDialog">
+  <form id="bikeForm" method="dialog">
+    <div class="modal-head"><div><span class="eyebrow">NUEVA FICHA</span><h2 id="formTitle">Añadir moto</h2></div><button type="button" class="close-btn" id="closeDialog">×</button></div>
+    <input type="hidden" id="bikeId">
+    <label>Nombre del modelo *<input id="name" required placeholder="Ej. Kawasaki Vulcan S"></label>
+    <div class="form-row"><label>Marca<input id="brand" placeholder="Kawasaki"></label><label>Año<input id="year" type="number" min="1900" max="2100" placeholder="2026"></label></div>
+    <label>Estado<select id="status"><option value="owned">En mi garaje</option><option value="wish">Lista de deseos</option><option value="past">Moto que tuve</option></select></label>
+    <label>Precio / valor (€)<input id="price" type="number" min="0" step="50" placeholder="6500"></label>
+    <div class="form-row"><label>Cilindrada (cc)<input id="cc" type="number" min="0" placeholder="600"></label><label>Potencia (kW)<input id="kw" type="number" min="0" step="0.1" placeholder="35"></label></div>
+    <div class="form-row"><label>Potencia (CV)<input id="hp" type="number" min="0" step="0.1" placeholder="47.6"></label><label>Peso (kg)<input id="weight" type="number" min="0" step="0.1" placeholder="210"></label></div>
+    <div class="form-row"><label>Velocidad máx. (km/h)<input id="speed" type="number" min="0" placeholder="160"></label><label>Par motor (Nm)<input id="torque" type="number" min="0" step="0.1" placeholder="52"></label></div>
+    <div class="form-row"><label>Consumo (L/100 km)<input id="consumption" type="number" min="0" step="0.1" placeholder="4.2"></label><label>Depósito (L)<input id="tank" type="number" min="0" step="0.1" placeholder="16"></label></div>
+    <div class="form-row"><label>Limitación A2<select id="a2"><option value="unknown">Sin confirmar</option><option value="yes">Sí</option><option value="no">No</option><option value="factory">A2 de fábrica</option></select></label><label>Tipo<input id="type" placeholder="Custom / cruiser"></label></div>
+    <label>Notas<textarea id="notes" rows="3" placeholder="Extras, enlaces, modificaciones, sensaciones…"></textarea></label>
+    <div class="modal-actions"><button type="button" class="outline-btn" id="cancelDialog">Cancelar</button><button type="submit" class="gold-btn">Guardar moto</button></div>
+    <p class="privacy-note">Se guarda localmente en este navegador de tu iPhone.</p>
+  </form>
+</dialog>
+<div class="toast" id="toast" role="status"></div>
+<script src="app.js"></script>
+</body>
+</html>
